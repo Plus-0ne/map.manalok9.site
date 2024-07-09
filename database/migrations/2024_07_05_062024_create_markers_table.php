@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('markers', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->charset('utf8mb4')->collation('utf8mb4_bin')->nullable();
-            $table->string('latitude');
-            $table->string('longitude');
-            $table->string('title');
-            $table->string('description');
-            $table->string('thumbnail');
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

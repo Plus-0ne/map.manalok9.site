@@ -48,7 +48,7 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="file_image" class="form-label">Choose image</label>
-                                <input id="file_image" type="file" class="form-control" name="" id="" placeholder="" aria-describedby="fileHelpId" />
+                                <input id="file_image" type="file" class="form-control"/>
                             </div>
                         </div>
 
@@ -56,10 +56,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Close
+                <button id="submitNewMarker" type="button" class="btn btn-primary">
+                    <span class="mdi mdi-plus"></span> Add marker
                 </button>
-                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>

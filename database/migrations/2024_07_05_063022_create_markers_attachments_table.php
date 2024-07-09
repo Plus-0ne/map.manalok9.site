@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->charset('utf8mb4')->collation('utf8mb4_bin')->nullable();
             $table->string('marker_uuid')->charset('utf8mb4')->collation('utf8mb4_bin')->nullable();
-            $table->string('title');
-            $table->string('description');
-            $table->string('path');
-            $table->string('format');
-            $table->string('type');
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
+            $table->string('path')->nullable();
+            $table->string('format')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

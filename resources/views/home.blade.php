@@ -28,7 +28,12 @@
                     @auth('admins')
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-ite">
-                            <a class="nav-link text-light active" aria-current="page" href="{{ route('logout') }}">
+                            <a class="nav-link text-light" aria-current="page" href="{{ route('dashboard') }}">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-ite">
+                            <a class="nav-link text-light" aria-current="page" href="{{ route('logout') }}">
                                 Logout
                             </a>
                         </li>
