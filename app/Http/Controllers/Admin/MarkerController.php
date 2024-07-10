@@ -269,7 +269,7 @@ class MarkerController extends Controller
             return response()->json($data);
         }
 
-        $markers = MarkerModel::with('markerAttachments')->get();
+        $markers = MarkerModel::with('markerAttachment')->get();
 
         $data = [
             'status' => 'success',

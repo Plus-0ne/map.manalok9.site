@@ -54,24 +54,36 @@ $(function() {
                     if (res.markers !== undefined && res.markers.length > 0) {
                         const markers = res.markers;
                         $.each(markers, function (mI, mVal) {
-
                             let newIcon = L.icon({
-                                iconUrl: window.urlBase + '/img/marker-icon-violet.png',
-                                iconSize: [20, 35]
-                                });
-
-                            L.marker([mVal.latitude, mVal.longitude],{
-                                icon: newIcon
-                            }).addTo(map).on('click',function (ev) {
-                                $('#view360image').modal('toggle');
-                                setTimeout(() => {
-                                    pannellumShow();
-                                }, 300);
+                                iconUrl:
+                                    window.urlBase +
+                                    "/img/marker-icon-violet.png",
+                                iconSize: [20, 35],
                             });
 
+                            let image360 =
+                                mVal.marker_attachment.path === undefined
+                                    ? null
+                                    : mVal.marker_attachment.path;
+
+                            L.marker([mVal.latitude, mVal.longitude], {
+                                icon: newIcon,
+                            })
+                                .addTo(map)
+                                .on("click", function (ev) {
+                                    if (image360 != null) {
+                                        $("#view360image").modal("toggle");
+                                        setTimeout(() => {
+                                            pannellumShow(image360);
+                                        }, 300);
+                                    }
+                                })
+                                .on('contextmenu', function(e) {
+                                    contextMenuNew(e,mVal);
+                                });
                         });
                     }
-                    
+
                 }
             }
         });
@@ -84,10 +96,10 @@ $(function() {
      * Initiate 360 image
      * @returns {any}
      */
-    function pannellumShow() {
+    function pannellumShow(image360) {
         pannellum.viewer('panorama', {
             "type": "equirectangular",
-            "panorama": window.assetUrl + 'img/360-images/DJI_0062.JPG',
+            "panorama": window.assetUrl + image360,
             "autoLoad": true
         });
     }
@@ -120,34 +132,51 @@ $(function() {
 
                 console.log(res);
 
+                if (res.status == 'success') {
+                    window.location.reload();
+                }
+
             }
         });
     });
 
-    /**
-     * File image on change
-     * @param {any} '#file_image'
-     * @returns {any}
-     */
-    // $('#file_image').on('change', function () {
-    //     $.ajax({
-    //         xhr: function() {
-    //             var xhr = new window.XMLHttpRequest();
-    //             xhr.upload.addEventListener("progress", function(evt) {
-    //                 if (evt.lengthComputable) {
-    //                     var percentComplete = (evt.loaded / evt.total) * 100;
-    //                     //Do something with upload progress here
-    //                 }
-    //            }, false);
-    //            return xhr;
-    //         },
-    //         type: "method",
-    //         url: "url",
-    //         data: "data",
-    //         dataType: "dataType",
-    //         success: function (response) {
+    $('#view360image').on('hidden.bs.modal', function () {
+        $('#panorama').html("");
+    });
 
-    //         }
-    //     });
-    // });
+
+    function contextMenuNew(e,data){
+
+        let left  = e.originalEvent.clientX  + "px";
+        let top  = e.originalEvent.clientY  + "px";
+
+        let div = $('#customContextMenu');
+
+        div.css('display', 'flex');
+        div.css('left', left);
+        div.css('top', top);
+
+        let updateMarker = $('#updateMarker');
+        let deleteMarker = $('#deleteMarker');
+
+        updateMarker.attr('data-uuid',data.uuid);
+        deleteMarker.attr('data-uuid',data.uuid);
+
+    }
+
+    $(document).on('click',function() {
+        $('#customContextMenu').css('display','none');
+    });
+
+    $(document).on('click','#deleteMarker', function () {
+        const uuid = $(this).attr('data-uuid');
+
+        alert(uuid);
+    });
+
+    $(document).on('click','#updateMarker', function () {
+        const uuid = $(this).attr('data-uuid');
+
+        alert(uuid);
+    });
 });

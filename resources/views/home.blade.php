@@ -5,6 +5,7 @@
     <x-meta title="{{ $title }}"></x-meta>
 
     <x-links></x-links>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>
@@ -12,18 +13,20 @@
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" href="#">Manalo Resort Hotel</a>
+                <a class="navbar-brand text-light" href="{{ route('home') }}">
+                    <img src="{{ asset('img/Manalo Resort Hotel Vertical White Logo.png') }}" height="50px">
+                </a>
                 <button class="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="mdi mdi-format-align-justify"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-ite active">
+                        {{-- <li class="nav-ite active">
                             <a class="nav-link text-light active" aria-current="page" href="{{ route('home') }}">
                                 Map
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                     @auth('admins')
                     <ul class="navbar-nav ms-auto">
@@ -44,6 +47,20 @@
         </nav>
 
         <div id="map" class="map"></div>
+        <div id="customContextMenu" style="position: absolute; display: none; z-index: 999999;">
+            <!-- Hover added -->
+            <div class="list-group">
+                <a id="updateMarker" href="javascript:void(0);" class="list-group-item list-group-item-action">
+                    <small>Update</small>
+                </a>
+
+                <a id="deleteMarker" href="javascript:void(0);" class="list-group-item list-group-item-action">
+                    <small>Delete</small>
+                </a>
+
+            </div>
+
+        </div>
         @auth('admins')
         <div class="admin-controls">
             <div class="btn-group" role="group" data-bs-toggle="buttons">
@@ -54,7 +71,12 @@
             </div>
         </div>
         @endauth
+
+
     </div>
+
+
+
     <x-modal.view_360></x-modal.view_360>
     @auth('admins')
     <x-modal.add_marker></x-modal.add_marker>
