@@ -1,16 +1,3 @@
-html {
-    min-height: 100%;
-    position: relative;
-}
-body {
-    height: 100vh;
-    content: "";
-    clear: both;
-    box-sizing: border-box;
-    margin: 0;
-    background-color: rgb(32, 32, 32);
-}
-
 .login-container {
     width: 360px;
     padding: 2rem 1.5rem;
@@ -18,54 +5,64 @@ body {
     border-radius: 6px;
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: row;
+body {
     height: 100%;
+    min-height: 100%;
     max-height: 100%;
-    background-color: white;
+    clear: both;
+    content: "";
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.navigation-control {
+    position: fixed;
+    width: 100vw;
+    background-color: rgb(142, 10, 146) !important;
 }
 
-.sidebar {
-    width: 0px;
-    max-width: 0px;
-    height: 100vh;
-    background: #6f04c6;
-    display: flex;
-    flex-direction: column;
-}
-.sidebar-close {
+.navigation-control .nav-link,.navbar-brand {
+    color: white !important;
     font-size: 1.3rem;
-    color: white;
 }
-.main {
-    width: 100%;
-    /* margin-left: auto; */
-    /* background-color: blue; */
-}
-.sidebar.show {
-    position: absolute;
-    z-index: 1;
-    width: 300px;
-    max-width: 300px;
-}
-
 #toggler-sidebar {
     visibility: visible;
 }
-#sidebar-close {
-    visibility: visible;
+.wrapper {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    min-height: calc(100% - 64px);
+    width: 100%;
+    padding-top: 64px;
 }
-.navigation-control {
-    background-color: #ffffff !important;
+.sidebar {
+    position: fixed;
+    height: 100vh;
+    min-height: 100vh;
+    width: 0px;
+    background-color: rgb(29, 29, 29);
+    display: none;
+    z-index: 1;
 }
-.navigation-control .nav-link  ,.navbar-brand {
-
-    font-size: 1.3rem;
+.sidebar.show {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
 }
 .logo-container {
-    width: 150px;
+    width: 100px;
+    text-align: center;
     margin: auto;
+}
+.main-content {
+    width: 100vw;
+    overflow-x: none;
+    overflow-y: auto;
+}
+.card {
+    height: 100%;
 }
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
@@ -79,20 +76,17 @@ body {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-    #toggler-sidebar {
-        visibility: hidden;
-    }
-    #sidebar-close {
-        visibility: hidden;
-    }
     .sidebar {
+        display: flex;
+        flex-direction: column;
         width: 300px;
-        max-width: 300px;
     }
-    .main {
+    .main-content {
         width: calc(100% - 300px);
         margin-left: auto;
-        /* background-color: blue; */
+    }
+    #toggler-sidebar {
+        visibility: hidden;
     }
 }
 

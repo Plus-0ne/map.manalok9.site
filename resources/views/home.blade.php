@@ -6,6 +6,13 @@
 
     <x-links></x-links>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        #panorama.pnlm-container {
+            background-image: none;
+            background-color: rgb(32, 32, 32);
+
+        }
+        </style>
 </head>
 
 <body>

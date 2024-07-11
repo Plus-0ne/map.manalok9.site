@@ -1,4 +1,7 @@
 $(function() {
+    let originalPosition = null;
+
+
     function loadMap() {
         // Leaflet map initialization
         let map = L.map("map", {
@@ -29,7 +32,7 @@ $(function() {
 
 
         // Define image bounds
-        let imageUrl = window.assetUrl + "img/DJI_0031.jpg"; // Adjust to your local image URL
+        let imageUrl = window.assetUrl + "img/DJI_0107.jpg"; // Adjust to your local image URL
         let imageBounds = [
             [-90, -180],
             [90, 180],
@@ -48,7 +51,7 @@ $(function() {
             },
             success: function (response) {
                 const res = response;
-                console.log(res);
+
                 if (res.status !== undefined && res.status == 'success') {
 
                     if (res.markers !== undefined && res.markers.length > 0) {
@@ -66,27 +69,52 @@ $(function() {
                                     ? null
                                     : mVal.marker_attachment.path;
 
-                            L.marker([mVal.latitude, mVal.longitude], {
-                                icon: newIcon,
-                            })
-                                .addTo(map)
-                                .on("click", function (ev) {
-                                    if (image360 != null) {
-                                        $("#view360image").modal("toggle");
-                                        setTimeout(() => {
-                                            pannellumShow(image360);
-                                        }, 300);
-                                    }
-                                })
-                                .on('contextmenu', function(e) {
-                                    contextMenuNew(e,mVal);
-                                });
+                            let marker = L.marker(
+                                [mVal.latitude, mVal.longitude],
+                                {
+                                    icon: newIcon,
+                                    draggable: "true",
+                                }
+                            );
+                            marker.addTo(map);
+
+                            marker.on("click", function (ev) {
+
+                                console.log(ev.target.getLatLng());
+                                if (image360 != null) {
+                                    $("#view360image").modal("toggle");
+                                    setTimeout(() => {
+                                        pannellumShow(image360);
+                                    }, 300);
+                                }
+                            });
+
+                            marker.on("contextmenu", function (e) {
+                                if (isAuthenticated == true) {
+                                    contextMenuNew(e, mVal);
+                                }
+                            });
+
+                            // On drag update marker location if admin is authenticated
+                            marker.on("dragend", function (e) {
+                                if (isAuthenticated == false) {
+                                    return false;
+                                }
+                                const ev = e.target;
+
+                                originalPosition = ev.getLatLng();
+
+                                console.log(originalPosition);
+                                return;
+                                updateMarkerPosition(e, mVal,marker,map);
+                            });
                         });
                     }
 
                 }
             }
         });
+
     }
 
     // Load map
@@ -97,11 +125,13 @@ $(function() {
      * @returns {any}
      */
     function pannellumShow(image360) {
+
         pannellum.viewer('panorama', {
             "type": "equirectangular",
             "panorama": window.assetUrl + image360,
-            "autoLoad": true
+            "autoLoad": true,
         });
+
     }
 
     /**
@@ -140,6 +170,30 @@ $(function() {
         });
     });
 
+    function updateMarkerPosition(e,data,marker,map) {
+        let swalText = 'Do you want to move this marker ?';
+        let swalIcon = 'info';
+        let confirmBtnText = 'Move';
+        let cancelBtnText = 'Cancel';
+        swalConfirmation(swalText,swalIcon,confirmBtnText,cancelBtnText).then((result) => {
+
+
+            if (result.isDismissed) {
+
+                // Restore the marker to its original position if move is cancelled
+                marker.setLatLng(originalPosition);
+
+                // Optional: center the map on the marker
+                map.setView(originalPosition);
+            }
+
+        });
+    }
+    /**
+     * Clear modal 360 image
+     * @param {any} '#view360image'
+     * @returns {any}
+     */
     $('#view360image').on('hidden.bs.modal', function () {
         $('#panorama').html("");
     });
@@ -179,4 +233,16 @@ $(function() {
 
         alert(uuid);
     });
+
+
+    function swalConfirmation(swalText,swalIcon,confirmBtnText,cancelBtnText) {
+        return Swal.fire({
+            icon: swalIcon,
+            text: swalText,
+            confirmButtonText: confirmBtnText,
+            cancelButtonText: cancelBtnText,
+            showCancelButton: true,
+            heightAuto: false,
+        });
+    }
 });

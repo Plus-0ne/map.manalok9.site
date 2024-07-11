@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MarkerController;
+use App\Http\Controllers\Admin\PinMarkerController;
 use App\Http\Controllers\Client\MapController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,11 @@ Route::prefix('admin')->group(function () {
         Route::prefix('dashboard')->group(function () {
 
             Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        });
+
+        Route::prefix('markers')->group(function () {
+
+            Route::get('/', [PinMarkerController::class, 'index'])->name('markers');
         });
     });
 });
