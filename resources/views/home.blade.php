@@ -23,10 +23,6 @@
                 <a class="navbar-brand text-light" href="{{ route('home') }}">
                     <img src="{{ asset('img/Manalo Resort Hotel Vertical White Logo.png') }}" height="50px">
                 </a>
-                <button class="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="mdi mdi-format-align-justify"></span>
-                </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         {{-- <li class="nav-ite active">
