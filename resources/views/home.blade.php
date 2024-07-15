@@ -53,7 +53,7 @@
         <div id="customContextMenu" style="position: absolute; display: none; z-index: 999999;">
             <!-- Hover added -->
             <div class="list-group">
-                <a id="updateMarker" href="javascript:void(0);" class="list-group-item list-group-item-action">
+                <a id="updateMarker" href="javascript:void(0);" class="list-group-item list-group-item-action" style="display: none;">
                     <small>Update</small>
                 </a>
 

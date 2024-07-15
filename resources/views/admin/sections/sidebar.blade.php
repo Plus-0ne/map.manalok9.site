@@ -21,6 +21,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admins') }}" class="nav-link link-light">
+                    <span class="mdi mdi-account-group-outline"></span>
+                    Admins
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('home') }}" class="nav-link link-light">
                     <span class="mdi mdi-web"></span> Visit Homepage
                 </a>

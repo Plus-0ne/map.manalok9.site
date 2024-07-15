@@ -97,7 +97,7 @@ $(function() {
                                         lat:mVal.latitude,
                                         lng:mVal.longitude
                                     };
-                                    
+
                                     console.log(originalPosition);
                                     console.log(e.target.getLatLng());
 
@@ -218,7 +218,55 @@ $(function() {
     $(document).on("click", "#deleteMarker", function () {
         const uuid = $(this).attr("data-uuid");
 
-        alert(uuid);
+        let swalText = "Do you want to delete this marker ?";
+        let swalIcon = "info";
+        let confirmBtnText = "Delete";
+        let cancelBtnText = "Cancel";
+
+        swalConfirmation(swalText, swalIcon, confirmBtnText, cancelBtnText).then((result) => {
+            if (result.isDismissed) {
+                return false;
+            }
+
+            const fd = new FormData();
+
+            fd.append('uuid',uuid);
+
+            $.ajax({
+                url: window.urlBase + "/admin/marker/delete",
+                type: "post",
+                data: fd,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                success: function (response) {
+                    const res = response;
+
+                    if (res.status !== undefined) {
+
+                        let sText = res.message;
+                        let sIcon = res.status;
+
+                        swalPrompt(sText, sIcon).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                },
+                error: function (error) {
+                    const response = JSON.parse(error.responseText);
+                    let sText = response.message;
+                    let sIcon = 'error';
+                    swalPrompt(sText, sIcon);
+                }
+            });
+        });
+
     });
 
     $(document).on("click", "#updateMarker", function () {
@@ -227,18 +275,22 @@ $(function() {
         alert(uuid);
     });
 
-    function swalConfirmation(
-        swalText,
-        swalIcon,
-        confirmBtnText,
-        cancelBtnText
-    ) {
+    function swalConfirmation(swalText,swalIcon,confirmBtnText,cancelBtnText) {
         return Swal.fire({
             icon: swalIcon,
             text: swalText,
             confirmButtonText: confirmBtnText,
             cancelButtonText: cancelBtnText,
             showCancelButton: true,
+            heightAuto: false,
+        });
+    }
+
+    function swalPrompt(sText,sIcon) {
+        return Swal.fire({
+            text: sText,
+            icon: sIcon,
+            confirmButtonText: 'Ok',
             heightAuto: false,
         });
     }

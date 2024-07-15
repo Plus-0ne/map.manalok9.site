@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MarkerController;
@@ -71,6 +72,8 @@ Route::prefix('admin')->group(function () {
 
             Route::post('/create', [MarkerController::class, 'create'])->name('marker.create');
 
+            Route::post('/delete', [MarkerController::class, 'delete'])->name('marker.delete');
+
 
 
         });
@@ -83,6 +86,11 @@ Route::prefix('admin')->group(function () {
         Route::prefix('markers')->group(function () {
 
             Route::get('/', [PinMarkerController::class, 'index'])->name('markers');
+        });
+
+        Route::prefix('admins')->group(function () {
+
+            Route::get('/', [AdminsController::class, 'index'])->name('admins');
         });
     });
 });

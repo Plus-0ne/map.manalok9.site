@@ -259,6 +259,11 @@ class MarkerController extends Controller
         }
     }
 
+    /**
+     * Get all markers
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function get(Request $request) {
         if (!$request->ajax()) {
             $data = [
@@ -275,6 +280,44 @@ class MarkerController extends Controller
             'status' => 'success',
             'message' => 'Marker fetched successfully!',
             'markers' => $markers
+        ];
+
+        return response()->json($data);
+    }
+
+    /**
+     * Delete marker
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request) {
+        // Check if request is ajax
+        if (!$request->ajax()) {
+            $data = [
+                'status' => 'error',
+                'message' => 'Invalid request! Please try again.'
+            ];
+
+            return response()->json($data);
+        }
+
+        // Get marker
+        $marker = MarkerModel::where('uuid',$request->input('uuid'))->first();
+
+        // Check if marker is deleted
+        if (!$marker->delete()) {
+            $data = [
+                'status' => 'error',
+                'message' => 'Failed to delete marker! Please try again.'
+            ];
+
+            return response()->json($data);
+        }
+
+        // Return json success
+        $data = [
+            'status' => 'success',
+            'message' => 'Marker deleted successfully!'
         ];
 
         return response()->json($data);
