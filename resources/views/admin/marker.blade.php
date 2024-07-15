@@ -25,13 +25,14 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="w-100 table-responsive">
+                        <div class="w-100 table-responsive px-3">
                             <table id="markers" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th scope="col">Location</th>
                                         <th scope="col">Lat. / Long.</th>
                                         <th scope="col">Created at</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,6 +47,21 @@
                                         </td>
                                         <td>
                                             {{ $row->created_at }}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-secondary">Split dropdown</button>
+                                                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item disabled" href="#">Disabled action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Separated link</a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach

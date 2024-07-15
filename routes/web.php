@@ -91,6 +91,9 @@ Route::prefix('admin')->group(function () {
         Route::prefix('admins')->group(function () {
 
             Route::get('/', [AdminsController::class, 'index'])->name('admins');
+            Route::post('/create', [AdminsController::class, 'create'])->name('admins.create');
+            
+            Route::post('/delete', [AdminsController::class, 'delete'])->name('admins.delete');
         });
     });
 });

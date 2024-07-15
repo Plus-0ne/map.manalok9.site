@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -11,6 +12,10 @@ use Laracasts\Utilities\JavaScript\JavaScriptFacade as JavaScript;
 
 class LoginController extends Controller
 {
+    /**
+     * Show login page
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index() {
         JavaScript::put([
             'urlBase' => URL::to('/'),
@@ -22,7 +27,14 @@ class LoginController extends Controller
         return view('admin.login',$data);
     }
 
+    /**
+     * Validate login
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function validation(Request $request) {
+
+        // Check ajax request
         if (!$request->ajax()) {
             $data = [
                 'status' => 'error',
@@ -31,6 +43,7 @@ class LoginController extends Controller
             return response()->json($data);
         }
 
+        // Create validation rules
         $validate = Validator::make($request->all(),[
             'email_address' => 'required',
             'password' => 'required'
@@ -39,6 +52,7 @@ class LoginController extends Controller
             'password.required' => 'Please enter your password!'
         ]);
 
+        // If validation fails
         if ($validate->fails()) {
             $data = [
                 'status' => 'warning',
@@ -46,11 +60,34 @@ class LoginController extends Controller
             ];
             return response()->json($data);
         }
+
+        // Get admin details using email address
+        $emailExist = Admins::where('email_address' , $request->input('email_address'))->first();
+
+        // If email address not found
+        if (!$emailExist) {
+            $data = [
+                'status' => 'warning',
+                'message' => 'Email address not found!'
+            ];
+            return response()->json($data);
+        }
+
+        // If admin account is disabled
+        if ($emailExist->status < 1) {
+            $data = [
+                'status' => 'warning',
+                'message' => 'This account has been deactivated!'
+            ];
+            return response()->json($data);
+        }
+        // Create credential array
         $cred = [
             'email_address' => $request->input('email_address'),
             'password' => $request->input('password')
         ];
 
+        // Attempt login admins
         if (!Auth::guard('admins')->attempt($cred)) {
 
             $data = [
@@ -61,6 +98,7 @@ class LoginController extends Controller
 
         }
 
+        // Return success response
         $data = [
             'status' => 'success',
             'message' => 'Admin logged in successfully!'
@@ -68,6 +106,11 @@ class LoginController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * Logout account
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector
+     */
     public function logout(Request $request) {
 
         Auth::logout();
