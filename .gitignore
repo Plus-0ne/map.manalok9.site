@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/img/markers
+/public/img/temp
+/public/img/360-images
