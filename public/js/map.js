@@ -55,8 +55,8 @@ $(function() {
                             let newIcon = L.icon({
                                 iconUrl:
                                     window.urlBase +
-                                    "/img/marker-icon-violet.png",
-                                iconSize: [20, 35],
+                                    "/img/marker-purple-white.png",
+                                iconSize: [43, 55],
                             });
 
                             let image360 =
