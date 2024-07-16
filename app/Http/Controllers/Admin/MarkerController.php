@@ -322,4 +322,84 @@ class MarkerController extends Controller
 
         return response()->json($data);
     }
+
+    /**
+     * Move marker to new position
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function move(Request $request) {
+        // Check if request is ajax
+        if (!$request->ajax()) {
+            $data = [
+                'status' => 'error',
+                'message' => 'Invalid request! Please try again.'
+            ];
+
+            return response()->json($data);
+        }
+
+        // Create validation rules
+        $rules = [
+            'id' => 'required',
+            'lat' => 'required',
+            'lng' => 'required'
+        ];
+
+        // Create validation messages
+        $warningMessage = [
+            'id.required' => 'ID value not found!',
+            'lat.required' => 'Latitude value not found!',
+            'lng.required' => 'Longitude value not found!'
+        ];
+
+        // Validate request
+        $validate = Validator::make($request->all(),$rules,$warningMessage);
+
+        // If validation failes return warning message
+        if ($validate->fails()) {
+            $data = [
+                'status' => 'warning',
+                'message' => $validate->errors()->first()
+            ];
+
+            return response()->json($data);
+        }
+
+        // Find marker
+        $marker = MarkerModel::find($request->input('id'));
+
+        // If marker not found return warning response
+        if (!$marker) {
+            $data = [
+                'status' => 'warning',
+                'message' => 'Marker not found!'
+            ];
+
+            return response()->json($data);
+        }
+
+        // Update marker values
+        $marker->latitude = $request->input('lat');
+        $marker->longitude = $request->input('lng');
+
+        // If mark is not saved return warning response
+        if (!$marker->save()) {
+            $data = [
+                'status' => 'error',
+                'message' => 'Failed to update marker!'
+            ];
+
+            return response()->json($data);
+        }
+
+        // If saved return succes response
+        $data = [
+            'status' => 'success',
+            'message' => 'Marker moved successfully!'
+        ];
+
+        return response()->json($data);
+
+    }
 }

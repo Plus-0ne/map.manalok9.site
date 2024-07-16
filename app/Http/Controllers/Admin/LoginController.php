@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CustomHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Admins;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade as JavaScript;
@@ -99,10 +102,23 @@ class LoginController extends Controller
         }
 
         // Return success response
+        $descripton = Auth::guard('admins')->user()->first_name.' logged in at '.Carbon::now();
+
+
+        $logs = CustomHelper::createLogMessages([
+            'uuid' => Str::uuid(),
+            'trigger_uuid' => Auth::guard('admins')->user()->uuid,
+            'title' => 'success',
+            'description' => $descripton,
+            'type' => 'auth',
+        ]);
+
         $data = [
             'status' => 'success',
-            'message' => 'Admin logged in successfully!'
+            'message' => 'Admin logged in successfully!',
+            'logs' => $logs
         ];
+
         return response()->json($data);
     }
 

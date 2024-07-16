@@ -155,8 +155,10 @@ class AdminsController extends Controller
             return response()->json($data);
         }
 
+        // Count admins
         $countAdmins = Admins::all();
 
+        // If admin count is less than 0 return json response
         if ($countAdmins->count() < 1) {
             $data = [
                 'status' => 'warning',
@@ -165,6 +167,7 @@ class AdminsController extends Controller
             return response()->json($data);
         }
 
+        // If admin count is equal to 1 return json response
         if ($countAdmins->count() == 1) {
             $data = [
                 'status' => 'warning',
@@ -185,12 +188,11 @@ class AdminsController extends Controller
             return response()->json($data);
         }
 
-
-
+        // Find admin record
         $admin = Admins::find($id);
 
 
-        // Check Admin self delete
+        // Check Admin is self then return json response
         if ($admin->id == Auth::guard('admins')->user()->id) {
             $data = [
                 'status' => 'warning',
@@ -199,6 +201,7 @@ class AdminsController extends Controller
             return response()->json($data);
         }
 
+        // If admin is not deleted
         if (!$admin->delete()) {
             $data = [
                 'status' => 'error',
@@ -207,6 +210,7 @@ class AdminsController extends Controller
             return response()->json($data);
         }
 
+        // Admins is deleted
         $data = [
             'status' => 'success',
             'message' => 'Admin deleted successfully!'

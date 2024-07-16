@@ -18,7 +18,7 @@
 <body>
     <div class="main">
 
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand text-light" href="{{ route('home') }}">
                     <img src="{{ asset('img/Manalo Resort Hotel Vertical White Logo.png') }}" height="50px">

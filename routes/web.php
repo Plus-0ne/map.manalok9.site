@@ -74,6 +74,8 @@ Route::prefix('admin')->group(function () {
 
             Route::post('/delete', [MarkerController::class, 'delete'])->name('marker.delete');
 
+            Route::post('/move', [MarkerController::class, 'move'])->name('marker.move');
+
 
 
         });
@@ -92,7 +94,7 @@ Route::prefix('admin')->group(function () {
 
             Route::get('/', [AdminsController::class, 'index'])->name('admins');
             Route::post('/create', [AdminsController::class, 'create'])->name('admins.create');
-            
+
             Route::post('/delete', [AdminsController::class, 'delete'])->name('admins.delete');
         });
     });

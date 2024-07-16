@@ -8,6 +8,7 @@ $(function() {
             zoom: 3,
             scrollWheelZoom: true,
             minZoom: 3,
+            // attribution: 'Manalo Resort Map using Leaflet open-source JS library'
         });
 
         // Map on click event
@@ -93,16 +94,13 @@ $(function() {
                             if (isAuthenticated == true) {
                                 marker.on("dragend", function (e) {
 
+                                    let id = mVal.id;
+                                    let newPosition = e.target.getLatLng();
                                     originalPosition = {
-                                        lat:mVal.latitude,
-                                        lng:mVal.longitude
-                                    };
-
-                                    console.log(originalPosition);
-                                    console.log(e.target.getLatLng());
-
-                                    // return;
-                                    updateMarkerPosition(map,marker,originalPosition);
+                                        lat : mVal.latitude,
+                                        lng : mVal.longitude
+                                    }
+                                    updateMarkerPosition(id,map,marker,originalPosition,newPosition);
                                 });
                             }
                         });
@@ -112,6 +110,9 @@ $(function() {
         });
 
         // getLocation(map);
+        let customAttribution = `Manalo Resort Map using <a href="https://leafletjs.com/" target="_BLANK">Leaflet</a>`;
+
+        map.attributionControl.setPrefix(customAttribution);
     }
 
     // Load map
@@ -134,8 +135,12 @@ $(function() {
      * @param {any} '#submitNewMarker'
      * @returns {any}
      */
-    $("#submitNewMarker").on("click", function () {
+    $("#submitNewMarker").on("click", function (e) {
         const fd = new FormData();
+        const thisBtn = $(this);
+
+        e.preventDefault();
+        thisBtn.attr('disabled',true);
 
         fd.append("latitude", $("#latitude").val());
         fd.append("longitude", $("#longitude").val());
@@ -160,11 +165,13 @@ $(function() {
                 if (res.status == "success") {
                     window.location.reload();
                 }
-            },
+            },complete: function() {
+                thisBtn.attr('disabled',true);
+            }
         });
     });
 
-    function updateMarkerPosition(map,marker,originalPosition) {
+    function updateMarkerPosition(id,map,marker,originalPosition,newPosition) {
         let swalText = "Do you want to move this marker ?";
         let swalIcon = "info";
         let confirmBtnText = "Move";
@@ -182,6 +189,49 @@ $(function() {
 
                 // Optional: center the map on the marker
                 // map.setView(originalPosition);
+            }
+
+            if (result.isConfirmed) {
+                let lat = newPosition.lat;
+                let lng = newPosition.lng;
+
+                const fd = new FormData();
+
+                fd.append('id',id);
+                fd.append('lat',lat);
+                fd.append('lng',lng);
+
+                $.ajax({
+                    type: "POST",
+                    url: window.urlBase + "/admin/marker/move",
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    success: function (response) {
+                        const res = response;
+
+                        let sText = res.message;
+                        let sIcon = res.status;
+                        swalPrompt(sText, sIcon);
+
+                        if (res.status == 'success') {
+                            marker.setLatLng(newPosition);
+                            map.setView(newPosition);
+                        }
+
+                    },
+                    error: function (error) {
+                        const response = JSON.parse(error.responseText);
+                        let sText = response.message;
+                        let sIcon = 'error';
+                        swalPrompt(sText, sIcon);
+                    }
+                });
             }
         });
     }
