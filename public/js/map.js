@@ -30,7 +30,7 @@ $(function() {
         }
 
         // Define image bounds
-        let imageUrl = window.assetUrl + "img/DJI_0107.jpg"; // Adjust to your local image URL
+        let imageUrl = window.assetUrl + "img/DJI_0107.JPG"; // Adjust to your local image URL
         let imageBounds = [
             [-90, -180],
             [90, 180],
