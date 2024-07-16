@@ -49,7 +49,7 @@
 
                             <div class="w-100">
                                 <div class="list-group">
-                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active"
+                                    {{-- <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active"
                                         aria-current="true">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1">Heading</h5>
@@ -73,7 +73,7 @@
                                         </div>
                                         <p class="mb-1">Paragraph</p>
                                         <small class="text-muted">paragraph footer</small>
-                                    </a>
+                                    </a> --}}
                                 </div>
 
                             </div>
@@ -87,31 +87,21 @@
                             </h5>
                             <div class="w-100">
                                 <div class="list-group">
-                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active"
+                                    @if ($system_logs->count() > 0)
+                                    @foreach ($system_logs as $row)
+                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"
                                         aria-current="true">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Heading</h5>
-                                            <small class="text-muted">Description</small>
+                                            <h5 class="mb-1">{{ Str::upper($row->type) }}</h5>
+                                            <small class="text-muted">{{ $row->created_at }}</small>
                                         </div>
-                                        <p class="mb-1">Paragraph</p>
-                                        <small class="text-muted">paragraph footer</small>
+                                        <p class="mb-1">
+                                            {{ $row->description }}
+                                        </p>
+                                        {{-- <small class="text-muted">paragraph footer</small> --}}
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Heading</h5>
-                                            <small class="text-muted">Description</small>
-                                        </div>
-                                        <p class="mb-1">Paragraph</p>
-                                        <small class="text-muted">paragraph footer</small>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start disabled">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Heading</h5>
-                                            <small class="text-muted">Description</small>
-                                        </div>
-                                        <p class="mb-1">Paragraph</p>
-                                        <small class="text-muted">paragraph footer</small>
-                                    </a>
+                                    @endforeach
+                                    @endif
                                 </div>
 
                             </div>
