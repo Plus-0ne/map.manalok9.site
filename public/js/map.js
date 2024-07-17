@@ -1,14 +1,19 @@
 $(function() {
     let originalPosition = null;
+    let zoomValue = 3;
 
+    if ($('body').innerWidth() < 500) {
+
+        zoomValue = 1;
+    }
     function loadMap() {
         // Leaflet map initialization
         let map = L.map("map", {
             center: [51.505, -0.09],
-            zoom: 3,
+            zoom: zoomValue,
             scrollWheelZoom: true,
-            minZoom: 3,
-            // attribution: 'Manalo Resort Map using Leaflet open-source JS library'
+            minZoom: 0,
+            closePopupOnClick: false,
         });
 
         // Map on click event
@@ -53,10 +58,8 @@ $(function() {
                         const markers = res.markers;
                         $.each(markers, function (mI, mVal) {
                             let newIcon = L.icon({
-                                iconUrl:
-                                    window.urlBase +
-                                    "/img/marker-purple-white.png",
-                                iconSize: [43, 55],
+                                iconUrl : window.urlBase + "/img/marker-icons/coffee-icon.png",
+                                iconSize : [40, 55],
                             });
 
                             let image360 =
@@ -72,16 +75,21 @@ $(function() {
                                         isAuthenticated == true ?? "true",
                                 }
                             );
+
                             marker.addTo(map);
 
                             marker.on("click", function (ev) {
-                                console.log(ev.target.getLatLng());
+                                // console.log(ev.target.getLatLng());
+
                                 if (image360 != null) {
                                     $("#view360image").modal("toggle");
                                     setTimeout(() => {
                                         pannellumShow(image360);
                                     }, 300);
                                 }
+
+                                ev.stopPropagation();
+
                             });
 
                             marker.on("contextmenu", function (e) {
@@ -103,6 +111,18 @@ $(function() {
                                     updateMarkerPosition(id,map,marker,originalPosition,newPosition);
                                 });
                             }
+
+                            let popup = L.popup({
+                                offset : [0,-20],
+                                closeOnClick: false,
+                                autoClose: false,
+                                closeOnEscapeKey: false,
+                                closeButton: false,
+                                // className : 'bg-dark'
+                            }).setContent(`${mVal.title}`);
+
+                            marker.bindPopup(popup).openPopup();
+
                         });
                     }
                 }

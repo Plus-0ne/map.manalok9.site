@@ -21,6 +21,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('icons') }}" class="nav-link link-light">
+                    <span class="mdi mdi-map-marker-plus"></span>
+                    Icons
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admins') }}" class="nav-link link-light">
                     <span class="mdi mdi-account-group-outline"></span>
                     Admins

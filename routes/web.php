@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminsController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\IconController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MarkerController;
 use App\Http\Controllers\Admin\PinMarkerController;
@@ -96,6 +97,10 @@ Route::prefix('admin')->group(function () {
             Route::post('/create', [AdminsController::class, 'create'])->name('admins.create');
 
             Route::post('/delete', [AdminsController::class, 'delete'])->name('admins.delete');
+        });
+
+        Route::prefix('icons')->group(function () {
+            Route::get('/', [IconController::class, 'index'])->name('icons');
         });
     });
 });
