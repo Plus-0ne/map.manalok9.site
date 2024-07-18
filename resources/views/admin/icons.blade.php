@@ -31,64 +31,30 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 col-lg-2 text-light">
-                        <div class="card text-dark">
-                            <img class="card-img-top" src="{{ asset('img/marker-icons/coffee-icon.png') }}" alt="Title" />
-                            <div class="card-body">
-                                <h4 class="card-title">Coffee icon</h4>
-                                <div class="card-text">
-                                    <button type="button" class="btn btn-primary btn-sm">
-                                        Button
+                    @if ($marker_icons->count() > 0)
+                    @foreach ($marker_icons as $row)
+                    <div class="col-6 col-lg-2 text-light mb-4">
+                        <div class="card text-dark py-2 px-1">
+                            <img class="card-img-top w-50 mx-auto" src="{{ asset($row->path) }}" alt="Title" />
+                            <div class="card-body text-center">
+                                <h6 class="card-title">{{ Str::upper($row->name) }}</h6>
+                                <div class="card-text text-end">
+                                    <br>
+                                    <button type="button" class="btn btn-danger btn-sm w-100 removeIcon" data-uuid="{{ $row->uuid }}">
+                                        <span class="mdi mdi-delete"></span> Remove
                                     </button>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div class="col-6 col-lg-2 text-light">
-                        <div class="card text-dark">
-                            <img class="card-img-top" src="{{ asset('img/marker-icons/pool-icon.png') }}" alt="Title" />
-                            <div class="card-body">
-                                <h4 class="card-title">Pool icon</h4>
-                                <div class="card-text">
-                                    <button type="button" class="btn btn-primary btn-sm">
-                                        Button
-                                    </button>
-                                </div>
-                            </div>
+                    @endforeach
+                    @else
+                    <div class="col-12 text-light mb-4 text-center">
+                        <div class="text-dark lead">
+                            No marker icon found!
                         </div>
-
                     </div>
-                    <div class="col-6 col-lg-2 text-light">
-                        <div class="card text-white">
-                            <img class="card-img-top" src="{{ asset('img/marker-icons/food-icon.png') }}" alt="Title" />
-                            <div class="card-body">
-                                <h4 class="card-title">Food icon</h4>
-                                <div class="card-text">
-                                    <button type="button" class="btn btn-primary btn-sm">
-                                        Button
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-6 col-lg-2 text-light">
-                        <div class="card text-white">
-                            <img class="card-img-top" src="{{ asset('img/marker-icons/office-icon.png') }}" alt="Title" />
-                            <div class="card-body">
-                                <h4 class="card-title">Office icon</h4>
-                                <div class="card-text">
-                                    <button type="button" class="btn btn-primary btn-sm">
-                                        Button
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    
+                    @endif
                 </div>
             </div>
         </div>

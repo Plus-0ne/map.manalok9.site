@@ -53,4 +53,46 @@ class CustomHelper {
         $create->save();
 
     }
+
+    /**
+     * Upload icon images
+     * @param mixed $request
+     * @return array
+     */
+    public static function uploadIconImages(mixed $request) {
+        try {
+
+            $file = $request->file('file');
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $type = $file->getMimeType();
+
+            $format = $file->extension();
+
+            $fullpath = public_path('img/marker-icons').'/'.$fileName;
+
+            $file->move(public_path('img/marker-icons'), $fileName);
+
+            $data = [
+                'status' => 'success',
+                'filename' => $fileName,
+                'type' => $type,
+                'format' => $format,
+                'path' => 'img/marker-icons/'.$fileName,
+                'fullpath' => $fullpath
+            ];
+
+            return $data;
+
+        } catch (\Throwable $th) {
+
+            $data = [
+                'status' => 'error',
+                'message' => $th->message()
+            ];
+
+            return $data;
+        }
+    }
 }

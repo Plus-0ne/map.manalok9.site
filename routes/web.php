@@ -101,6 +101,9 @@ Route::prefix('admin')->group(function () {
 
         Route::prefix('icons')->group(function () {
             Route::get('/', [IconController::class, 'index'])->name('icons');
+            Route::post('/create', [IconController::class, 'create'])->name('icons.create');
+
+            Route::post('/remove', [IconController::class, 'remove'])->name('icons.remove');
         });
     });
 });
