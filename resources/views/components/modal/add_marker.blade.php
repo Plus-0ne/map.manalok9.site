@@ -52,6 +52,43 @@
                             </div>
                         </div>
 
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="marker_icon" class="form-label">
+                                    Select icon
+                                </label>
+                                <div class="container-fluid">
+                                    <div class="row">
+
+                                        @if ($markers->count() > 0)
+                                        @php
+                                            $count = 1;
+
+                                        @endphp
+                                        @foreach ($markers as $row)
+
+
+                                        <div class="col-2 text-center">
+                                            <div class="text-center p-1">
+                                                <label for="{{ $row->uuid }}">
+                                                    <img class="img-fluid" src="{{ asset($row->path) }}" alt="">
+                                                </label>
+                                                <input id="{{ $row->uuid }}" class="form-check-input" type="radio" name="marker_icon" value="{{ $row->uuid }}" @if ($count == 1) checked @endif/>
+                                            </div>
+                                        </div>
+
+                                        @php
+                                            $count++;
+                                        @endphp
+                                        @endforeach
+                                        @endif
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

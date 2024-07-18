@@ -52,13 +52,19 @@ $(function() {
             },
             success: function (response) {
                 const res = response;
-
+                console.log(res);
                 if (res.status !== undefined && res.status == "success") {
                     if (res.markers !== undefined && res.markers.length > 0) {
                         const markers = res.markers;
                         $.each(markers, function (mI, mVal) {
+                            let iUrl = window.urlBase + "/img/default.png";
+
+                            if (mVal.marker_icon !== undefined || mVal.marker_icon.length > 0) {
+                                iUrl = window.urlBase +'/'+ mVal.marker_icon.path;
+                            }
+
                             let newIcon = L.icon({
-                                iconUrl : window.urlBase + "/img/marker-icons/coffee-icon.png",
+                                iconUrl : iUrl,
                                 iconSize : [40, 55],
                             });
 
@@ -162,11 +168,13 @@ $(function() {
         e.preventDefault();
         thisBtn.attr('disabled',true);
 
+
         fd.append("latitude", $("#latitude").val());
         fd.append("longitude", $("#longitude").val());
         fd.append("location", $("#location").val());
         fd.append("description", $("#description").val());
         fd.append("file_image", $("#file_image")[0].files[0]);
+        fd.append("thumbnail", $("input[name=marker_icon]:checked").val());
 
         $.ajax({
             type: "POST",

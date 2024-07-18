@@ -69,7 +69,7 @@ class MarkerController extends Controller
             'longitude' => $request->input('longitude'),
             'title' => $request->input('location'),
             'description' => $request->input('description'),
-            'thumbnail' => 'null',
+            'thumbnail' => $request->input('thumbnail'),
         ]);
 
 
@@ -192,12 +192,14 @@ class MarkerController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
             'location' => 'required',
-            'file_image' => 'mimes:jpg,bmp,png'
+            'file_image' => 'mimes:jpg,bmp,png',
+            'thumbnail' => 'required'
         ],[
             'latitude.required' => 'Latitude value not found! Please try again.',
             'longitude.required' => 'Longitude value not found! Please try again. ',
             'location.required' => 'Please enter location!',
-            'file_image.mimes' => 'Please upload a validate image!'
+            'file_image.mimes' => 'Please upload a validate image!',
+            'thumbnail.required' => 'Please select a marker icon!'
         ]);
 
         // If validation rules fails return warning message
@@ -274,7 +276,7 @@ class MarkerController extends Controller
             return response()->json($data);
         }
 
-        $markers = MarkerModel::with('markerAttachment')->get();
+        $markers = MarkerModel::with('markerAttachment')->with('markerIcon')->get();
 
         $data = [
             'status' => 'success',

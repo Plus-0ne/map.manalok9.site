@@ -43,4 +43,14 @@ class MarkerModel extends Model
     {
         return $this->hasOne(MarkerAttachmentsModel::class, 'marker_uuid', 'uuid');
     }
+
+    /**
+     * Get the markerIcon associated with the MarkerModel
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function markerIcon(): HasOne
+    {
+        return $this->hasOne(MarkersIcon::class, 'uuid', 'thumbnail');
+    }
 }

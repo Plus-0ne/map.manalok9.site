@@ -82,7 +82,7 @@
 
     <x-modal.view_360></x-modal.view_360>
     @auth('admins')
-    <x-modal.add_marker></x-modal.add_marker>
+    <x-modal.add_marker :markers="$markers"></x-modal.add_marker>
     @endauth
     <x-footer></x-footer>
     <x-scripts></x-scripts>
