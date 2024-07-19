@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CustomHelper;
 use App\Http\Controllers\Controller;
 use App\Models\MarkerAttachmentsModel;
 use App\Models\MarkerModel;
@@ -303,11 +304,34 @@ class MarkerController extends Controller
             return response()->json($data);
         }
 
-        // Get marker
-        $marker = MarkerModel::where('uuid',$request->input('uuid'))->first();
+        // Declare variable
+        $uuid = $request->input('uuid');
 
+        // Convert uuid to id
+        $id = CustomHelper::convertUuidToId($uuid,MarkerModel::class);
+
+        DB::beginTransaction();
+
+        // Get marker
+        $marker = MarkerModel::find($id);
+
+        // Try to delete image
+        try {
+            
+            $toDeleteFile = public_path($marker->markerAttachment->path);
+
+            File::delete($toDeleteFile);
+
+        } catch (\Throwable $th) {
+            $data = [
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ];
+
+            return response()->json($data);
+        }
         // Check if marker is deleted
-        if (!$marker->delete()) {
+        if (!$marker->delete() || !$marker->markerAttachment->delete()) {
             $data = [
                 'status' => 'error',
                 'message' => 'Failed to delete marker! Please try again.'
@@ -316,6 +340,11 @@ class MarkerController extends Controller
             return response()->json($data);
         }
 
+        // Delete marker attachments
+        // Check if attachment is deleted
+        // Delete image file
+
+        DB::commit();
         // Return json success
         $data = [
             'status' => 'success',

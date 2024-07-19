@@ -118,6 +118,9 @@ $(function() {
                                 });
                             }
 
+                            let popTitle = (mVal.title) ?? '';
+                            let popDescription = (mVal.description) ?? '';
+
                             let popup = L.popup({
                                 offset : [0,-20],
                                 closeOnClick: false,
@@ -125,7 +128,7 @@ $(function() {
                                 closeOnEscapeKey: false,
                                 closeButton: false,
                                 // className : 'bg-dark'
-                            }).setContent(`${mVal.title}`);
+                            }).setContent(`<p>${popTitle}</p>`);
 
                             marker.bindPopup(popup).openPopup();
 

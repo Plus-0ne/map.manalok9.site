@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IconController;
@@ -60,7 +61,7 @@ Route::prefix('admin')->group(function () {
          * @param String '/logout'
          * @param Controller [LoginController::class
          * @param Function 'logout']
-         * @return \Illuminate\Routing\RouteRegistrar
+         * @return \Illuminate\Routing\Route
          */
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -71,18 +72,49 @@ Route::prefix('admin')->group(function () {
          */
         Route::prefix('marker')->group(function () {
 
+            /**
+             * Create marker
+             * @param String '/create'
+             * @param Controller [MarkerController::class
+             * @param Function 'create']
+             * @return \Illuminate\Routing\Route
+             */
             Route::post('/create', [MarkerController::class, 'create'])->name('marker.create');
 
+            /**
+             * Delete marker
+             * @param String '/delete'
+             * @param Controller [MarkerController::class
+             * @param Function 'delete']
+             * @return \Illuminate\Routing\Route
+             */
             Route::post('/delete', [MarkerController::class, 'delete'])->name('marker.delete');
 
+            /**
+             * Move marker
+             * @param String '/move'
+             * @param Controller [MarkerController::class
+             * @param Function 'move']
+             * @return \Illuminate\Routing\Route
+             */
             Route::post('/move', [MarkerController::class, 'move'])->name('marker.move');
-
-
 
         });
 
+        /**
+         * Route prefix for dashboard
+         * @param String 'dashboard'
+         * @return \Illuminate\Routing\RouteRegistrar
+         */
         Route::prefix('dashboard')->group(function () {
 
+            /**
+             * Dashboard route
+             * @param String '/'
+             * @param Controller [DashboardController::class
+             * @param Function 'index']
+             * @return \Illuminate\Routing\Route
+             */
             Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         });
 
@@ -104,6 +136,13 @@ Route::prefix('admin')->group(function () {
             Route::post('/create', [IconController::class, 'create'])->name('icons.create');
 
             Route::post('/remove', [IconController::class, 'remove'])->name('icons.remove');
+        });
+
+        Route::prefix('account')->group(function () {
+            Route::get('/', [AccountController::class, 'index'])->name('account');
+
+            Route::post('/name/update', [AccountController::class, 'nameUpdate'])->name('account.name.update');
+            Route::post('/password/update', [AccountController::class, 'passwordUpdate'])->name('account.password.update');
         });
     });
 });

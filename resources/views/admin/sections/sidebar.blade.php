@@ -32,6 +32,14 @@
                     Admins
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('account') }}" class="nav-link link-light">
+                    <span class="mdi mdi-account-outline"></span>
+                    Profile
+                </a>
+            </li>
+
             <li>
                 <a href="{{ route('home') }}" class="nav-link link-light">
                     <span class="mdi mdi-web"></span> Visit Homepage
